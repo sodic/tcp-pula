@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useMemo, Context } from 'react';
-import { useEventListener } from '@chakra-ui/react';
-import { useMotionValue, useVelocity, MotionValue } from 'framer-motion';
+import React, { createContext, useContext, useMemo } from "react";
+import { useEventListener } from "@chakra-ui/react";
+import { useMotionValue, useVelocity, MotionValue } from "framer-motion";
 
 // Track mouse position as motion values
 const useMousePosition = () => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  useEventListener('mousemove', (e) => {
+  useEventListener("mousemove", (e) => {
     x.set(e.clientX);
     y.set(e.clientY);
   });
@@ -21,23 +21,21 @@ const useMousePosition = () => {
   );
 };
 
-
-
 interface MouseContext {
   position: {
-    x: MotionValue<number>
-    y: MotionValue<number>
+    x: MotionValue<number>;
+    y: MotionValue<number>;
   };
   velocity: {
-    x: MotionValue<number>
-    y: MotionValue<number>
+    x: MotionValue<number>;
+    y: MotionValue<number>;
   };
 }
 const context = createContext({} as MouseContext);
 
 // By using react context here, we can avoid spamming window
 // with mouse listeners every time we use a mouse hook.
-export const MouseProvider = ({ children }: {children: any}) => {
+export const MouseProvider = ({ children }: { children: any }) => {
   const { x, y } = useMousePosition();
   const velocityX = useVelocity(x);
   const velocityY = useVelocity(y);
@@ -62,4 +60,3 @@ export const MouseProvider = ({ children }: {children: any}) => {
 export const useMouse = () => {
   return useContext(context);
 };
-
